@@ -33,3 +33,20 @@ function writem {
   /home/debian/Desktop/CODE/memory/./main -w $1 $2 $3 1
 }
 
+# use to quickly load i2c-2 then access registers through bash
+# (script.sh uses functions readm and writem)
+function load_i2c {
+        echo BB-I2C1 > $SLOTS
+        source /home/debian/Desktop/CODE/i2c/script.sh
+        i2c2_enable
+}
+
+# use to quickly start and stop LED blink state
+function LED {
+        case $1 in
+                '0') echo none > /sys/devices/ocp.3/gpio-leds.8/leds/beaglebone\:green\:usr0/trigger; ;;
+                '1') echo heartbeat > /sys/devices/ocp.3/gpio-leds.8/leds/beaglebone\:green\:usr0/trigger; ;;
+                *) echo "Unsupported Option"; ;;
+        esac
+}
+
