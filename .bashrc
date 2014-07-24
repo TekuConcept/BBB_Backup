@@ -8,7 +8,9 @@ function edit_network {
 
 SLOTS=/sys/devices/bone_capemgr.*/slots
 PINS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pins
+GROUPS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pingroups
 FIRM=/lib/firmware
+
 
 function search_desk {
   cd /home/debian/Desktop
