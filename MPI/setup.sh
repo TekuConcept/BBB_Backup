@@ -16,6 +16,7 @@ SERVER=10.0.0.20
 CLIENT=10.0.0.22
 
 echo "Installing required packages..."
+# Be sure to do the same for each slave
 #apt-get update # sometimes necessary
 apt-get install openmpi-bin
 #apt-get install ompenmpi-common
