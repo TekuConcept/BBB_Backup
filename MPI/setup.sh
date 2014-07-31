@@ -5,7 +5,8 @@
 #
 # NOTE:  This  script  assumes  the  respective  Client  and  Server  IPs
 # It was only built for a single  client  to  server  setup, nevertheless
-# MPI can be setup over numerous machines in a network
+# MPI can be setup over numerous machines in a network. NFS  is  required
+# for MPI file sharing and program execution over multiple  slave  nodes.
 #
 # This script was successfully tested on:
 # Linux Distro: Debian Wheezy
