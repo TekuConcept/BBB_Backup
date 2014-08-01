@@ -55,7 +55,27 @@ echo "(To re-enable, set PermitEmptyPasswords to yes in /etc/ssh/sshd_config \
 sed -n "s/PermitEmptyPasswords yes/PermitEmptyPasswords no/p" /etc/ssh/sshd_config
 /etc/init.d/ssh restart
 
-ssh-add ~/.ssh/id_dsa # use for mpi-passwordless logins
+# https://help.github.com/articles/working-with-ssh-key-passphrases
+agent_is_running() {
+    if [ "$SSH_AUTH_SOCK" ]; then
+        # ssh-add returns:
+        #   0 = agent running, has keys
+        #   1 = agent running, no keys
+        #   2 = agent not running
+        ssh-add -l >/dev/null 2>&1 || [ $? -eq 1 ]
+    else
+        false
+    fi
+}
+
+# use for mpi-passwordless logins
+if ! agent_is_running; then
+    (umask 077; ssh-agent >"$env")
+    . "$env" >/dev/null
+    ssh-agent ssh-add
+elif ! agent_has_keys; then
+    ssh-agent ssh-add
+fi
 
 echo "Configuring OpenMPI..."
 touch ~/.mpi_hostfile
