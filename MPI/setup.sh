@@ -70,11 +70,10 @@ agent_is_running() {
 
 # use for mpi-passwordless logins
 if ! agent_is_running; then
-    (umask 077; ssh-agent >"$env")
-    . "$env" >/dev/null
-    ssh-agent ssh-add
+    eval $(ssh-agent)
+    ssh-add
 elif ! agent_has_keys; then
-    ssh-agent ssh-add
+    ssh-add
 fi
 
 echo "Configuring OpenMPI..."
