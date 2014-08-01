@@ -22,7 +22,7 @@ echo "Installing required packages..."
 apt-get install nfs-common
 
 echo "Creating directories..."
-mkdir -p /mnt/nfs/home/$NAME
+mkdir -p /home/debian/$NAME
 if [ $(ls /var | grep www) != "www" ]; then
 	mkdir -p /var/www
 else
@@ -32,5 +32,5 @@ else
 fi
 
 echo "Mounting files..."
-mount $SERVER:/home/debian/$NAME /mnt/nfs/home/$NAME
+mount $SERVER:/home/debian/$NAME /home/debian/$NAME
 mount $SERVER:/var/www /var/www
