@@ -6,7 +6,6 @@
  */
 
 #include "PWM.h"
-#include "stdio.h"
 
 PWM::PWM(uint _addr_) :
 	addr(_addr_), period(0), dutyA(0), dutyB(0),
@@ -63,7 +62,6 @@ int PWM::setDutyA(uint ns) {
 	uint cmpa = addr.read(PWM_CMPA) & 0x0000FFFF;
 	cmpa |= ((dty / cdiv) << 16);
 	addr.write(PWM_CMPA, cmpa);
-	fprintf(stderr, "duty: %d\tCMPA: %X\n", dutyA, cmpa);
 
 	return 0;
 }
