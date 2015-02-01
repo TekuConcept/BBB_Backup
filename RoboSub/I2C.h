@@ -14,7 +14,7 @@
 class I2C {
 public:
 	virtual ~I2C();
-	I2C(uint lane);
+	I2C(uint bus);
 
 	// read from slave register of device
 	uint read(uint s_addr, uint s_reg);
