@@ -76,7 +76,7 @@ void HMC5883L::setGain(Gain gn) {
 
 	gain = gn;
 
-	uint crb = bus.read(IMU_COMPASS_ADDR, IMU_COMPASS_CONFIG_B) & 0xE0;
+	uint crb = bus.read(IMU_COMPASS_ADDR, IMU_COMPASS_CONFIG_B) & 0x1F;
 	crb |= gn << 5;
 	bus.write(IMU_COMPASS_ADDR, IMU_COMPASS_CONFIG_B, crb);
 }
@@ -87,7 +87,7 @@ void HMC5883L::setMode(Mode md) {
 
 	mode = md;
 
-	bus.write(IMU_COMPASS_ADDR, IMU_COMPASS_CONFIG_A, md);
+	bus.write(IMU_COMPASS_ADDR, IMU_COMPASS_MODE, md);
 }
 
 uint HMC5883L::getSampleAverage() {
