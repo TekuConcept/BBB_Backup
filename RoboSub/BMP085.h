@@ -2,7 +2,7 @@
  * BMP085.h
  *
  *  Created on: Jan 29, 2015
- *  Forked from BMP085 library by M.Grusin
+ *  Fork: https://github.com/adafruit/Adafruit-BMP085-Library
  */
 
 #ifndef BMP085_H_
