@@ -15,8 +15,8 @@
 
 I2C::~I2C() {
 }
-I2C::I2C(uint lane):
-		addr(lane)
+I2C::I2C(uint bus):
+		addr(bus)
 {
 }
 
@@ -105,8 +105,7 @@ uint I2C::isBusBusy() {
 
 void I2C::reset() {
 	// remove interrupt flags
-	int irq = addr.read(I2C_IRQENABLE_SET); // (0x2C)
-	addr.write(I2C_IRQENABLE_CLR, irq);		// (0x30)
+	addr.write(I2C_IRQENABLE_CLR, addr.read(I2C_IRQENABLE_SET));		// (R0x2C W0x30)
 
 	// [-- Set system settings --]
 	// (Reset and Set procedures are needed to prevent fatal operating system crashes
