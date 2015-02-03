@@ -20,13 +20,13 @@ public:
 
 	// Samples averaged per measurement
 	enum Sample {
-		Sx1, Sx2,
+		Sx1 = 0, Sx2,
 		Sx4, Sx8
 	};
 
 	// Data Output Rate in Hertz
 	enum Rate {
-		Hz_75, Hz1_5,
+		Hz_75 = 0, Hz1_5,
 		Hz3,   Hz7_5,
 		Hz15,  Hz30,
 		Hz75
@@ -34,7 +34,7 @@ public:
 
 	// Gain configuration in Gauss
 	enum Gain {
-		G_88, G1_3,
+		G_88 = 0, G1_3,
 		G1_9, G2_5,
 		G4_0, G4_7,
 		G5_6, G8_1
@@ -48,7 +48,7 @@ public:
 		result in the data register. RDY goes high when new data is placed
 		in all three registers.
 		 */
-		Continuous,
+		Continuous = 0,
 		/*
 		When single-measurement mode is selected, device performs a single
 		measurement, sets RDY high and returns to idle mode.
