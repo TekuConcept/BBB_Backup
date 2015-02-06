@@ -1,3 +1,4 @@
 apt-get install ruby
 apt-get install ruby-dev
 gem install rice
+gem install sysinfo
