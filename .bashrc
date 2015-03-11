@@ -66,11 +66,23 @@ function load_i2c {
 }
 
 function LED {
-	case $1 in
-		'0') echo none > /sys/devices/ocp.3/gpio-leds.8/leds/beaglebone\:green\:usr0/trigger; ;;
-		'1') echo heartbeat > /sys/devices/ocp.3/gpio-leds.8/leds/beaglebone\:green\:usr0/trigger; ;;
-		*) echo "Unsupported Option"; ;;
-	esac
+        led_path=/sys/devices/ocp.3/gpio-leds.8/leds/beaglebone\:green\:
+        mode="none"
+        case $2 in
+                '0') mode=none; ;;
+                '1') mode=nand-disk; ;;
+                '2') mode=mmc0; ;;
+                '3') mode=timer; ;;
+                '4') mode=oneshot; ;;
+                '5') mode=heartbeat; ;;
+                '6') mode=backlight; ;;
+                '7') mode=gpio; ;;
+                '8') mode=cpu0; ;;
+                '9') mode=default-on; ;;
+                'A') mode=transient; ;;
+                *) echo "Unsupported Option\nTry: LED usr0 5"; ;;
+        esac
+        echo $mode > "$led_path$1/trigger"
 }
 
 function fix_skew {
