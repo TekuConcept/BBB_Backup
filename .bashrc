@@ -17,21 +17,15 @@
 # alias cp='cp -i'
 # alias mv='mv -i'
 
-function edit_bash {
-	nano ~/.bashrc
-}
-
-function edit_network {
-	nano /etc/network/interfaces
-}
+alias edit_bash="nano ~/.bashrc"
+alias edit_network="nano /etc/network/interfaces"
+alias edit_ssh="nano /etc/ssh/sshd_config" 
+alias edit_host="nano /etc/hostname"
+alias search_desk="cd /home/debian/Desktop"
 
 SLOTS=/sys/devices/bone_capemgr.*/slots
 FIRM=/lib/firmware
 PINS=/sys/kernel/debug/pinctrl/44e10800.pinmux/pins
-
-function search_desk {
-	cd /home/debian/Desktop
-}
 
 # use to compile main.c: "> comp_c main"
 function comp_c {
