@@ -20,7 +20,8 @@
 alias edit_bash="nano ~/.bashrc"
 alias edit_network="nano /etc/network/interfaces"
 alias edit_ssh="nano /etc/ssh/sshd_config" 
-alias edit_host="nano /etc/hostname"
+alias edit_hostname="nano /etc/hostname"
+alias edit_host="nano /etc/hosts"
 alias search_desk="cd /home/debian/Desktop"
 
 SLOTS=/sys/devices/bone_capemgr.*/slots
