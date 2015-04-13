@@ -143,7 +143,7 @@ static int __init driver_entry(void)
 		unregister_chrdev_region(dev, 1);
 		return PTR_ERR(cl);
 	}
-	if (IS_ERR(dev_ret = device_create(cl, NULL, dev, NULL, "mindgem")))
+	if (IS_ERR(dev_ret = device_create(cl, NULL, dev, NULL, DEVICE_NAME)))
 	{
 		class_destroy(cl);
 		cdev_del(&c_dev);
