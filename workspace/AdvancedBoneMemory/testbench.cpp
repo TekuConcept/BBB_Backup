@@ -6,7 +6,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-#include "../mindgem.h"
+#include "mindgem.h"
 
 #define DEVICE "/dev/mindgem"
 
