@@ -1,3 +1,14 @@
+/**
+  * Base code provided by SolidusCode
+  * <https://www.youtube.com/channel/UCYXWGO7hi4McH2qRLWq1dIQ>
+  *
+  * Created: Apr 12, 2015
+  *      by: TekuConcept
+  *
+  *
+  * Load with insmod, then follow instructions from dmesg
+  */
+
 #include <linux/module.h>   //
 #include <linux/kernel.h>   //
 #include <linux/init.h>     // initializations macros
