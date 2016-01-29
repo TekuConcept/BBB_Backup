@@ -22,6 +22,7 @@ alias edit_network="nano /etc/network/interfaces"
 alias edit_ssh="nano /etc/ssh/sshd_config" 
 alias edit_hostname="nano /etc/hostname"
 alias edit_host="nano /etc/hosts"
+alias edit_c9_workspace="nano /lib/systemd/system/cloud9.service"
 alias search_desk="cd /home/debian/Desktop"
 
 SLOTS=/sys/devices/bone_capemgr.*/slots
