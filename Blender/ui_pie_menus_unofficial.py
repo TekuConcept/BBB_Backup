@@ -26,7 +26,7 @@
 #     and quickly selecting the type of edit mode (vertex, edge, face)
 
 bl_info = {
-    "name": "Pie Menus Official",
+    "name": "Pie Menus Unofficial",
     "author": "Antony Riakiotakis, Sebastian Koenig, Chris Walker",
     "version": (1, 0, 3),
     "blender": (2, 77, 1),
