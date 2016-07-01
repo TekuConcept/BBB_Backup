@@ -1,3 +1,7 @@
+# Changes to default configuration: (assuming LMB is used for selection)
+# - MMB and Shift+MMB are swapped
+# - RMM+Double Click to set 3D Cursor
+
 import bpy
 import os
 
