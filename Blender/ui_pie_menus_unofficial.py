@@ -24,6 +24,8 @@
 # - Added 'Selection' menu for deselection in world space,
 #     rapidly toggling between edit-mode and object-mode,
 #     and quickly selecting the type of edit mode (vertex, edge, face)
+# - Added 'Snap|Origin' for quick 3d locator and object origin in absence
+#     of Maya's Insert hotkey
 
 bl_info = {
     "name": "Pie Menus Unofficial",
@@ -39,6 +41,33 @@ bl_info = {
 import bpy
 from bpy.types import Menu, Operator
 from bpy.props import EnumProperty
+
+
+class VIEW3D_PIE_snap_origin(Menu):
+    bl_label = "Snap | Origin"
+
+    def draw(self, context):
+        layout = self.layout
+        pie = layout.menu_pie()
+
+        group = pie.column()
+        box = group.box()
+        box.operator("view3d.snap_selected_to_grid", text="Selection to Grid")
+        box.operator("view3d.snap_selected_to_cursor", text="Selection to Cursor").use_offset = False
+        box.operator("view3d.snap_selected_to_cursor", text="Selection to Cursor (Offset)").use_offset = True
+        box.separator()
+        box.operator("view3d.snap_cursor_to_selected", text="Cursor to Selected")
+        box.operator("view3d.snap_cursor_to_center", text="Cursor to Center")
+        box.operator("view3d.snap_cursor_to_grid", text="Cursor to Grid")
+        box.operator("view3d.snap_cursor_to_active", text="Cursor to Active")
+
+        group2 = pie.column()
+        box2 = group2.box()
+        box2.operator("object.origin_set", text="Geometry to Origin").type = 'GEOMETRY_ORIGIN'
+        box2.operator("object.origin_set", text="Origin to Geometry").type = 'ORIGIN_GEOMETRY'
+        box2.operator("object.origin_set", text="Origin to 3D Cursor").type = 'ORIGIN_CURSOR'
+        box2.operator("object.origin_set", text="Origin to Center of Mass").type = 'ORIGIN_CENTER_OF_MASS'
+
 
 
 class VIEW3D_PIE_select_mode(Menu):
@@ -413,8 +442,10 @@ classes = (
     VIEW3D_PIE_manipulator,
     VIEW3D_PIE_pivot,
     VIEW3D_PIE_snap,
+
     VIEW3D_PIE_create,
     VIEW3D_PIE_select_mode,
+    VIEW3D_PIE_snap_origin,
 
     CLIP_PIE_geometry_reconstruction,
     CLIP_PIE_tracking_pie,
@@ -442,6 +473,8 @@ def register():
         kmi.properties.name = 'VIEW3D_PIE_object_mode'
         kmi = km.keymap_items.new('wm.call_menu_pie', 'RIGHTMOUSE', 'PRESS')
         kmi.properties.name = 'VIEW3D_PIE_select_mode'
+        kmi = km.keymap_items.new('wm.call_menu_pie', 'X', 'PRESS', shift=True)
+        kmi.properties.name = 'VIEW3D_PIE_snap_origin'
         kmi = km.keymap_items.new('wm.call_menu_pie', 'Z', 'PRESS')
         kmi.properties.name = 'VIEW3D_PIE_shade'
         kmi = km.keymap_items.new('wm.call_menu_pie', 'Q', 'PRESS')
