@@ -26,6 +26,8 @@
 #     and quickly selecting the type of edit mode (vertex, edge, face)
 # - Added 'Snap|Origin' for quick 3d locator and object origin in absence
 #     of Maya's Insert hotkey
+# - Updated Camera Pie Menu so that its all in one place
+#     (seems slightly slower IMO, but not enough to slow development)
 
 bl_info = {
     "name": "Pie Menus Unofficial",
@@ -122,19 +124,31 @@ class VIEW3D_PIE_object_mode(Menu):
         pie.operator("wm.call_menu_pie", text="Create Mesh", icon='PLUS').name = "VIEW3D_PIE_create"
 
 
-class VIEW3D_PIE_view_more(Menu):
-    bl_label = "More"
+#class VIEW3D_PIE_view_more(Menu):
+#    bl_label = "More"
 
-    def draw(self, context):
-        layout = self.layout
+#    def draw(self, context):
+#        layout = self.layout
 
-        pie = layout.menu_pie()
-        pie.operator("VIEW3D_OT_view_persportho", text="Persp/Ortho", icon='RESTRICT_VIEW_OFF')
-        pie.operator("VIEW3D_OT_camera_to_view")
-        pie.operator("VIEW3D_OT_view_selected")
-        pie.operator("VIEW3D_OT_view_all")
-        pie.operator("VIEW3D_OT_localview")
-        pie.operator("SCREEN_OT_region_quadview")
+#        pie = layout.menu_pie()
+#        pie.operator("VIEW3D_OT_view_persportho", text="Persp/Ortho", icon='RESTRICT_VIEW_OFF')
+#        pie.operator("VIEW3D_OT_camera_to_view")
+#        pie.operator("VIEW3D_OT_view_selected")
+#        pie.operator("VIEW3D_OT_view_all")
+#        pie.operator("VIEW3D_OT_localview")
+#        pie.operator("SCREEN_OT_region_quadview")
+
+
+class PIE_screen_helper(bpy.types.Operator):
+    bl_idname = "cam.screen_helper"
+    bl_label = "Camera Screen Helper"
+
+    def execute(self, context):
+        if context.screen.name != 'Default':
+            context.window.screen = bpy.data.screens["Default"]
+        else:
+            context.window.screen = bpy.data.screens["3D View Full"]
+        return {'FINISHED'}
 
 
 class VIEW3D_PIE_view(Menu):
@@ -144,8 +158,31 @@ class VIEW3D_PIE_view(Menu):
         layout = self.layout
 
         pie = layout.menu_pie()
-        pie.operator_enum("VIEW3D_OT_viewnumpad", "type")
-        pie.operator("wm.call_menu_pie", text="More", icon='PLUS').name = "VIEW3D_PIE_view_more"
+        pie.operator("view3d.viewnumpad", text="Left").type = 'LEFT'
+        pie.operator("view3d.viewnumpad", text="Right").type = 'RIGHT'
+        pie.operator("view3d.viewnumpad", text="Bottom").type = 'BOTTOM'
+        pie.operator("view3d.viewnumpad", text="Top").type = 'TOP'
+        pie.operator("view3d.viewnumpad", text="Front").type = 'FRONT'
+        pie.operator("view3d.viewnumpad", text="Back").type = 'BACK'
+        
+        box = pie.split().column()
+        box.row(align=True).operator("VIEW3D_OT_view_persportho", text="Persp/Ortho", icon='RESTRICT_VIEW_OFF')
+        box.row(align=True).operator("view3d.viewnumpad", text="Camera").type = 'CAMERA'
+        box.row(align=True).operator("screen.region_quadview", text="Toggle Quad View")
+
+        if context.screen.name == 'Default':
+            box.row(align=True).operator("cam.screen_helper", text="Full Screen")
+        else:
+            box.row(align=True).operator("cam.screen_helper", text="Default")
+
+        box = pie.split().column()
+        box.row(align=True).operator("VIEW3D_OT_view_all")
+        box.row(align=True).operator("VIEW3D_OT_view_selected")
+        box.row(align=True).operator("VIEW3D_OT_localview")
+        box.row(align=True).operator("VIEW3D_OT_camera_to_view")
+
+        #pie.operator_enum("VIEW3D_OT_viewnumpad", "type")
+        #pie.operator("wm.call_menu_pie", text="More", icon='PLUS').name = "VIEW3D_PIE_view_more"
 
 
 class VIEW3D_PIE_shade(Menu):
@@ -437,7 +474,7 @@ classes = (
 
     VIEW3D_PIE_object_mode,
     VIEW3D_PIE_view,
-    VIEW3D_PIE_view_more,
+    #VIEW3D_PIE_view_more,
     VIEW3D_PIE_shade,
     VIEW3D_PIE_manipulator,
     VIEW3D_PIE_pivot,
@@ -446,6 +483,7 @@ classes = (
     VIEW3D_PIE_create,
     VIEW3D_PIE_select_mode,
     VIEW3D_PIE_snap_origin,
+    PIE_screen_helper,
 
     CLIP_PIE_geometry_reconstruction,
     CLIP_PIE_tracking_pie,
