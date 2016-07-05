@@ -2,6 +2,7 @@
 # - MMB and Shift+MMB are swapped
 # - RMM+Double Click to set 3D Cursor
 # - Shift+X disabled for delete in favor a pie menu configuration
+# - INSERT aligns the mesh origin to the selection selection
 
 import bpy
 import os
@@ -257,6 +258,7 @@ kmi_props_setattr(kmi.properties, 'value_2', 'CONNECTED')
 # Map Object Non-modal
 km = kc.keymaps.new('Object Non-modal', space_type='EMPTY', region_type='WINDOW', modal=False)
 
+kmi = km.keymap_items.new('view3d.set_selected_origin', 'INSERT', 'PRESS')
 kmi = km.keymap_items.new('wm.call_menu_pie', 'TAB', 'PRESS', ctrl=True)
 kmi_props_setattr(kmi.properties, 'name', 'VIEW3D_PIE_snap')
 kmi = km.keymap_items.new('wm.call_menu_pie', 'PERIOD', 'PRESS')
@@ -292,8 +294,7 @@ km = kc.keymaps.new('3D View', space_type='VIEW_3D', region_type='WINDOW', modal
 
 kmi = km.keymap_items.new('view3d.manipulator', 'LEFTMOUSE', 'PRESS', any=True)
 kmi_props_setattr(kmi.properties, 'release_confirm', True)
-kmi = km.keymap_items.new('view3d.cursor3d', 'ACTIONMOUSE', 'DOUBLE_CLICK')
-kmi.active = False
+kmi = km.keymap_items.new('view3d.cursor3d', 'SPACE', 'PRESS', ctrl=True)
 kmi = km.keymap_items.new('view3d.rotate', 'MIDDLEMOUSE', 'PRESS', shift=True)
 kmi = km.keymap_items.new('view3d.move', 'MIDDLEMOUSE', 'PRESS')
 kmi = km.keymap_items.new('view3d.zoom', 'MIDDLEMOUSE', 'PRESS', ctrl=True)
@@ -571,6 +572,7 @@ kmi = km.keymap_items.new('wm.context_toggle', 'COMMA', 'PRESS', alt=True)
 kmi_props_setattr(kmi.properties, 'data_path', 'space_data.use_pivot_point_align')
 kmi = km.keymap_items.new('wm.context_toggle', 'SPACE', 'PRESS', ctrl=True)
 kmi_props_setattr(kmi.properties, 'data_path', 'space_data.show_manipulator')
+kmi.active = False
 kmi = km.keymap_items.new('wm.context_set_enum', 'PERIOD', 'PRESS')
 kmi_props_setattr(kmi.properties, 'data_path', 'space_data.pivot_point')
 kmi_props_setattr(kmi.properties, 'value', 'CURSOR')
