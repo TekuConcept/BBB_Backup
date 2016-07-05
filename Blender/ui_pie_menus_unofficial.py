@@ -28,6 +28,7 @@
 #     of Maya's Insert hotkey
 # - Updated Camera Pie Menu so that its all in one place
 #     (seems slightly slower IMO, but not enough to slow development)
+# - Add hotkey with Maya-like origin manipulation aka 'Insert'
 
 bl_info = {
     "name": "Pie Menus Unofficial",
@@ -43,6 +44,22 @@ bl_info = {
 import bpy
 from bpy.types import Menu, Operator
 from bpy.props import EnumProperty
+
+
+class PIE_origin_helper(bpy.types.Operator):
+    bl_idname = "view3d.set_selected_origin"
+    bl_label = "Set Selected Origin"
+
+    def execute(self, context):
+        bpy.ops.view3d.snap_cursor_to_selected()
+        _mode_ = context.active_object.mode
+        if _mode_ == "OBJECT":
+            bpy.ops.object.origin_set(type="ORIGIN_CURSOR")
+        else:
+            bpy.ops.object.mode_set(mode="OBJECT")
+            bpy.ops.object.origin_set(type="ORIGIN_CURSOR")
+            bpy.ops.object.mode_set(mode=_mode_)
+        return {'FINISHED'}
 
 
 class VIEW3D_PIE_snap_origin(Menu):
@@ -69,6 +86,7 @@ class VIEW3D_PIE_snap_origin(Menu):
         box2.operator("object.origin_set", text="Origin to Geometry").type = 'ORIGIN_GEOMETRY'
         box2.operator("object.origin_set", text="Origin to 3D Cursor").type = 'ORIGIN_CURSOR'
         box2.operator("object.origin_set", text="Origin to Center of Mass").type = 'ORIGIN_CENTER_OF_MASS'
+        box2.operator("view3d.set_selected_origin", text="Origin to Selection")
 
 
 
@@ -484,6 +502,7 @@ classes = (
     VIEW3D_PIE_select_mode,
     VIEW3D_PIE_snap_origin,
     PIE_screen_helper,
+    PIE_origin_helper,
 
     CLIP_PIE_geometry_reconstruction,
     CLIP_PIE_tracking_pie,
@@ -524,6 +543,7 @@ def register():
         kmi.properties.name = 'VIEW3D_PIE_pivot'
         kmi = km.keymap_items.new('wm.call_menu_pie', 'TAB', 'PRESS', ctrl=True, shift=True)
         kmi.properties.name = 'VIEW3D_PIE_snap'
+        kmi = km.keymap_items.new('view3d.set_selected_origin', 'INSERT', 'PRESS')
         addon_keymaps.append(km)
 
         km = wm.keyconfigs.addon.keymaps.new(name='Grease Pencil Stroke Edit Mode')
