@@ -1,0 +1,17 @@
+{
+  "name": "webgl_server",
+  "version": "1.0.0",
+  "description": "Project Template for a Three.js WebGL Server",
+  "main": "index.js",
+  "dependencies": {
+    "express": "latest",
+    "express-handlebars": "latest",
+    "body-parser": "^1.17.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "TekuConcept",
+  "license": "ISC"
+}
