@@ -107,6 +107,7 @@ class VIEW3D_PIE_select_mode(Menu):
             pie.operator("mesh.select_mode", text="Face", icon="FACESEL").type = 'FACE'
             pie.operator("mesh.select_mode", text="Edge", icon="EDGESEL").type = 'EDGE'
             pie.operator("object.mode_set", text="Object Mode", icon="OBJECT_DATAMODE").mode = 'OBJECT'
+            pie.operator("wm.call_menu_pie", text="Manipulator", icon="MANIPUL").name = "VIEW3D_PIE_manipulator"
 
 
 class VIEW3D_PIE_create(Menu):
@@ -537,11 +538,12 @@ def register():
         kmi = km.keymap_items.new('wm.call_menu_pie', 'Q', 'PRESS')
         kmi.properties.name = 'VIEW3D_PIE_view'
         #kmi = km.keymap_items.new('wm.call_menu_pie', 'SPACE', 'PRESS', ctrl=True)
-        kmi = km.keymap_items.new('wm.call_menu_pie', 'BUTTON5MOUSE', 'PRESS')
-        kmi.properties.name = 'VIEW3D_PIE_manipulator'
+
+        #kmi = km.keymap_items.new('wm.call_menu_pie', 'BUTTON5MOUSE', 'PRESS')
+        #kmi.properties.name = 'VIEW3D_PIE_manipulator'
         kmi = km.keymap_items.new('wm.call_menu_pie', 'PERIOD', 'PRESS')
         kmi.properties.name = 'VIEW3D_PIE_pivot'
-        kmi = km.keymap_items.new('wm.call_menu_pie', 'TAB', 'PRESS', ctrl=True, shift=True)
+        kmi = km.keymap_items.new('wm.call_menu_pie', 'RIGHTMOUSE', 'PRESS', shift=True)
         kmi.properties.name = 'VIEW3D_PIE_snap'
         kmi = km.keymap_items.new('view3d.set_selected_origin', 'INSERT', 'PRESS')
         addon_keymaps.append(km)
