@@ -101,16 +101,15 @@ void print_err(int res) {
 int main(int argc, char* argv[]) {
     query_arg_t q;
     int state = process_args(argc, argv, &q);
-    printf("%d %d %d %d\n", state, q.address, q.offset, q.value);
     
     int fd = open_device();
     
     if(state == D_READ) {
-        print_err(ioctl(fd, MINDGEM_READ, q));
+        print_err(ioctl(fd, MINDGEM_READ, &q));
+        printf("0x%X+%X: %X\n", q.address, q.offset, q.value);
     }
     else {
-        print_err(ioctl(fd, MINDGEM_WRITE, q));
-        printf("0x%X+%X: %X\n", q.address, q.offset, q.value);
+        print_err(ioctl(fd, MINDGEM_WRITE, &q));
     }
     
     close(fd);
