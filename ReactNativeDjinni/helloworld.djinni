@@ -1,0 +1,6 @@
+# http://mobilecpptutorials.com/your-first-cross-platform-djinni-app-part-1-cplusplus/
+
+hello_world = interface +c {
+	static create(): hello_world;
+	get_hello_world(): string;
+}
