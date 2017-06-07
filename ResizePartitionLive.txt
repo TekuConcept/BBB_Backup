@@ -1,0 +1,16 @@
+# Tested on Debain (VirtualBox for Windows and Beaglebone Black)
+
+fdisk /dev/sda
+> p
+> d (select partition 1 for /dev/sda1)
+> p
+> n
+> Partition type: default
+> Partition Number: default
+> First Sector: default
+> Last Sector: default
+> p
+> w
+
+reboot
+resize2fs /dev/sda1
