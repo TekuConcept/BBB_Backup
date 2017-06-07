@@ -1,16 +1,17 @@
-#! /usr/bin/env bash
- 
+#!/bin/bash
+
+gen_dir="djinni-src"
 base_dir=$(cd "`dirname "0"`" && pwd)
-cpp_out="$base_dir/generated-src/cpp"
-jni_out="$base_dir/generated-src/jni"
-objc_out="$base_dir/generated-src/objc"
-java_out="$base_dir/generated-src/java/com/mycompany/helloworld"
+cpp_out="$base_dir/$gen_dir/cpp"
+jni_out="$base_dir/$gen_dir/jni"
+objc_out="$base_dir/$gen_dir/objc"
+java_out="$base_dir/$gen_dir/java/com/mycompany/helloworld"
 java_package="com.mycompany.helloworld"
 namespace="helloworld"
 objc_prefix="HW"
 djinni_file="helloworld.djinni"
- 
-deps/djinni/src/run \
+
+ThirdParty/Djinni/src/run \
    --java-out $java_out \
    --java-package $java_package \
    --ident-java-field mFooBar \
