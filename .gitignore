@@ -1,3 +1,4 @@
 Win32/
 run.dir/
 Build/
+.externalNativeBuild/
