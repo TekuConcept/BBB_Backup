@@ -13,8 +13,10 @@ React iOS-Native: https://facebook.github.io/react-native/docs/native-modules-io
 
 1. Setup a Linux virtual machine: *[VirtualBox](https://www.virtualbox.org/wiki/Downloads) with the latest [Debian image](https://www.debian.org/distrib/).*
 2. Back to Windows: Install [node](https://nodejs.org/en/): *v7.6.0.*
-3. `npm install -g create-react-native-app`: react-native v2.0.1
+3. `npm install -g create-react-native-app`: v0.0.6
 4. `npm install -g ignite-cli`: v2.0.0-rc.2
+5. `npm install -g react-native-cli`: v2.0.1
+6. `npm install -g yarn`: v0.24.5
 5. Install [Android Studio](https://developer.android.com/studio/index.html): v2.3.3
     * Create an AVD by going into Tools > Android > AVD Manager (use Nougat v7 32-bit)
     * Go to Tools > Andoird > SDK Manager and install LLDB and Cmake (for C++)
