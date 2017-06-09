@@ -1,0 +1,6 @@
+[submodule "ReactNativeDjinni/ThirdParty/Djinni"]
+	path = ReactNativeDjinni/ThirdParty/Djinni
+	url = https://github.com/dropbox/djinni.git
+[submodule "ReactNativeDjinni/ThirdParty/Gyp"]
+	path = ReactNativeDjinni/ThirdParty/Gyp
+	url = https://chromium.googlesource.com/external/gyp.git
