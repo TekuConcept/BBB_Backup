@@ -15,7 +15,7 @@ PROJECT(foo_module)
 
 INCLUDE(CMake/KernelBuildTools.cmake)
 FILE(GLOB_RECURSE foo_sources "foo/source/*.c")
-KMODULE_INCLUDE_DIRECTORIES("foo/include")
+INCLUDE_DIRECTORIES("foo/include")
 ADD_KMODULE(foo ${foo_sources})
 
 TARGET_KMODULE_INCLUDE_DIRECTORIES(foo "common/include")
