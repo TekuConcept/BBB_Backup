@@ -21,26 +21,24 @@ SET(KMODULE_BUILD "/lib/module/${KVERSION}/build"
 SET(KMODULE_ARCH "" CACHE STRING "Target Architecture")
 SET(KMODULE_CROSS_COMPILE "${CROSS_COMPILER_PREFIX}"
     CACHE STRING "Target Toolchain Prefix")
-SET(KMODULE_INCLUDES "")
 SET(KMODULE_CFLAGS "")
 
 
 
 MACRO(WRITE_KBUILD target_name target_sources)
+    SET(COMMON_INCLUDES "")
+    GET_PROPERTY(includes
+        DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+        PROPERTY INCLUDE_DIRECTORIES)
+    FOREACH(inc ${includes})
+        STRING(APPEND COMMON_INCLUDES "-I${inc} ")
+    ENDFOREACH()
     SET(target_build_dir "${CMAKE_CURRENT_BINARY_DIR}/${target_name}")
     SET(data "obj-m := ${target_name}.o\n")
     STRING(APPEND data "${target_name}-y := ${target_sources}\n")
-    STRING(APPEND data "EXTRA_CFLAGS := ${KMODULE_CFLAGS} ${KMODULE_INCLUDES}\n")
+    STRING(APPEND data "EXTRA_CFLAGS := ${KMODULE_CFLAGS} ${COMMON_INCLUDES}\n")
     FILE(WRITE ${target_build_dir}/Kbuild ${data})
 ENDMACRO()
-
-
-
-FUNCTION(KMODULE_INCLUDE_DIRECTORIES)
-    FOREACH(inc ${ARGV})
-        STRING(APPEND KMODULE_INCLUDES "-I${inc} ")
-    ENDFOREACH()
-ENDFUNCTION()
 
 
 
