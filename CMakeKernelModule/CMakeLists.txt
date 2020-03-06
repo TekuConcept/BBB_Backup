@@ -18,5 +18,5 @@ FILE(GLOB_RECURSE foo_sources "foo/source/*.c")
 INCLUDE_DIRECTORIES("foo/include")
 ADD_KMODULE(foo ${foo_sources})
 
-TARGET_KMODULE_INCLUDE_DIRECTORIES(foo "common/include")
+TARGET_KINCLUDE_DIRECTORIES(foo "common/include")
 TARGET_KMODULE_CFLAGS(foo "-Wno-error")
