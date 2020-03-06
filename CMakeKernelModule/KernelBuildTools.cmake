@@ -23,6 +23,8 @@ SET(KMODULE_ARCH "${CMAKE_SYSTEM_PROCESSOR}"
 SET(KMODULE_CROSS_COMPILE "${CROSS_COMPILER_PREFIX}"
     CACHE STRING "Target Toolchain Prefix")
 SET(KMODULE_CFLAGS "")
+SET(KMODULE_AFLAGS "")
+SET(KMODULE_LDFLAGS "")
 
 
 
@@ -38,12 +40,31 @@ MACRO(WRITE_KBUILD target_name target_sources)
     SET(data "obj-m := ${target_name}.o\n")
     STRING(APPEND data "${target_name}-y := ${target_sources}\n")
     STRING(APPEND data "EXTRA_CFLAGS := ${KMODULE_CFLAGS} ${COMMON_INCLUDES}\n")
+    STRING(APPEND data "EXTRA_AFLAGS := ${KMODULE_AFLAGS} ${COMMON_INCLUDES}\n")
+    STRING(APPEND data "EXTRA_LDFLAGS := ${KMODULE_LDFLAGS}\n")
     FILE(WRITE ${target_build_dir}/Kbuild ${data})
 ENDMACRO()
 
 
 
-FUNCTION(TARGET_KMODULE_INCLUDE_DIRECTORIES)
+MACRO(SET_KTARGET_FLAGS target_name flag_prefix target_flags)
+    SET(MODULE_NAME ${target_name})
+    SET(target_build_dir "${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}")
+    IF(NOT EXISTS ${target_build_dir})
+        MESSAGE(FETAL_ERROR "Target ${MODULE_NAME} does not exist")
+    ENDIF()
+    SET(MODULE_FLAGS ${target_flags})
+    SET(LOCAL_FLAGS "")
+    FOREACH(flag ${MODULE_FLAGS})
+        STRING(APPEND LOCAL_FLAGS "${flag} ")
+    ENDFOREACH()
+    FILE(APPEND ${target_build_dir}/Kbuild
+        "EXTRA_${flag_prefix}FLAGS += ${LOCAL_FLAGS}\n")
+ENDMACRO()
+
+
+
+FUNCTION(TARGET_KINCLUDE_DIRECTORIES)
     IF (NOT ${ARGC} GREATER_EQUAL 2)
         MESSAGE(FETAL_ERROR " Incorrect number of arguments")
     ENDIF ()
@@ -56,29 +77,40 @@ FUNCTION(TARGET_KMODULE_INCLUDE_DIRECTORIES)
     LIST(REMOVE_AT MODULE_INCLUDES 0)
     SET(LOCAL_INCLUDES "")
     FOREACH(inc ${MODULE_INCLUDES})
+        IF (NOT IS_ABSOLUTE ${inc})
+            SET(inc "${CMAKE_CURRENT_SOURCE_DIR}/${inc}")
+        ENDIF ()
         STRING(APPEND LOCAL_INCLUDES "-I${inc} ")
     ENDFOREACH()
-    FILE(APPEND ${target_build_dir}/Kbuild "EXTRA_CFLAGS += ${LOCAL_INCLUDES}\n")
+    FILE(APPEND ${target_build_dir}/Kbuild
+        "EXTRA_CFLAGS += ${LOCAL_INCLUDES}\nEXTRA_AFLAGS += ${LOCAL_INCLUDES}\n")
 ENDFUNCTION()
 
 
 
-FUNCTION(TARGET_KMODULE_CFLAGS)
+FUNCTION(TARGET_KMODULE_CFLAGS target)
     IF (NOT ${ARGC} GREATER_EQUAL 2)
         MESSAGE(FETAL_ERROR " Incorrect number of arguments")
     ENDIF ()
-    SET(MODULE_NAME ${ARGV0})
-    SET(target_build_dir "${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}")
-    IF(NOT EXISTS ${target_build_dir})
-        MESSAGE(FETAL_ERROR "Target ${MODULE_NAME} does not exist")
-    ENDIF()
-    SET(MODULE_CFLAGS ${ARGV})
-    LIST(REMOVE_AT MODULE_CFLAGS 0)
-    SET(LOCAL_CFLAGS "")
-    FOREACH(flag ${MODULE_CFLAGS})
-        STRING(APPEND LOCAL_CFLAGS "${flag} ")
-    ENDFOREACH()
-    FILE(APPEND ${target_build_dir}/Kbuild "EXTRA_CFLAGS += ${LOCAL_CFLAGS}\n")
+    SET_KTARGET_FLAGS(${target} "C" ${ARGN})
+ENDFUNCTION()
+
+
+
+FUNCTION(TARGET_KMODULE_AFLAGS target)
+    IF (NOT ${ARGC} GREATER_EQUAL 2)
+        MESSAGE(FETAL_ERROR " Incorrect number of arguments")
+    ENDIF ()
+    SET_KTARGET_FLAGS(${target} "A" ${ARGN})
+ENDFUNCTION()
+
+
+
+FUNCTION(TARGET_KMODULE_LDFLAGS target)
+    IF (NOT ${ARGC} GREATER_EQUAL 2)
+        MESSAGE(FETAL_ERROR " Incorrect number of arguments")
+    ENDIF ()
+    SET_KTARGET_FLAGS(${target} "LD" ${ARGN})
 ENDFUNCTION()
 
 
