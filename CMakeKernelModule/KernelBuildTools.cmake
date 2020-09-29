@@ -115,6 +115,33 @@ ENDFUNCTION()
 
 
 
+FUNCTION(TARGET_KMODULE_SYMVERS target_name)
+    IF (NOT ${ARGC} GREATER_EQUAL 2)
+        MESSAGE(FETAL_ERROR " Incorrect number of arguments")
+    ENDIF ()
+
+    SET(MODULE_NAME ${target_name})
+    SET(target_build_dir "${CMAKE_CURRENT_BINARY_DIR}/${MODULE_NAME}")
+    IF(NOT EXISTS ${target_build_dir})
+        MESSAGE(FETAL_ERROR "Target ${MODULE_NAME} does not exist")
+    ENDIF()
+    SET(MODULE_SYMVERS ${ARGN})
+    SET(LOCAL_SYMVERS "")
+    FOREACH(symver ${MODULE_SYMVERS})
+        IF (TARGET ${symver})
+            GET_PROPERTY(symver_location TARGET ${symver} PROPERTY LOCATION)
+            STRING(APPEND LOCAL_SYMVERS "${symver_location}/Module.symvers ")
+        ELSE ()
+            STRING(APPEND LOCAL_SYMVERS "${symver} ")
+        ENDIF ()
+    ENDFOREACH()
+
+    FILE(APPEND ${target_build_dir}/Kbuild
+        "KBUILD_EXTRA_SYMBOLS += ${LOCAL_SYMVERS}\n")
+ENDFUNCTION()
+
+
+
 FUNCTION(ADD_KMODULE)
     IF (NOT ${ARGC} GREATER_EQUAL 2)
         MESSAGE(FETAL_ERROR " Incorrect number of arguments")
@@ -148,7 +175,7 @@ FUNCTION(ADD_KMODULE)
     ENDFOREACH()
 
     WRITE_KBUILD(${MODULE_NAME} ${MODULE_SOURCES})
-    SET(KBUILD $(MAKE) -C ${KMODULE_BUILD} M=${MODULE_DIR}
+    SET(KBUILD $(MAKE) V=1 -C ${KMODULE_BUILD} M=${MODULE_DIR}
         ARCH=${KMODULE_ARCH} CROSS_COMPILE=${KMODULE_CROSS_COMPILE})
     ADD_CUSTOM_COMMAND(
         COMMAND ${KBUILD}
@@ -172,5 +199,11 @@ FUNCTION(ADD_KMODULE)
     ADD_CUSTOM_TARGET(
         ${MODULE_NAME} ALL
         DEPENDS ${MODULE_DIR}/${MODULE_NAME}.ko
+    )
+    SET_TARGET_PROPERTIES(
+        ${MODULE_NAME}
+        PROPERTIES
+        LOCATION    ${MODULE_DIR}
+        OUTPUT_NAME ${MODULE_NAME}
     )
 ENDFUNCTION()
