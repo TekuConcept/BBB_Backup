@@ -1,9 +1,6 @@
 #
 # Created by TekuConcept on February 21, 2020
-#
-# Example CMake file demonstrating how to use
-# the kernel build tools. The example would
-# generate a "foo.ko" kernel module.
+# Example CMake file demonstrating how to use the kernel build tools
 #
 
 CMAKE_MINIMUM_REQUIRED(VERSION 3.8.2)
@@ -14,9 +11,17 @@ PROJECT(foo_module)
 # SET(KMODULE_CFLAGS "-g")
 
 INCLUDE(CMake/KernelBuildTools.cmake)
-FILE(GLOB_RECURSE foo_sources "foo/source/*.c")
-INCLUDE_DIRECTORIES("foo/include")
-ADD_KMODULE(foo ${foo_sources})
 
-TARGET_KINCLUDE_DIRECTORIES(foo "common/include")
+INCLUDE_DIRECTORIES("common/include")
+
+FILE(GLOB_RECURSE foo_sources "foo/source/*.c")
+ADD_KMODULE(foo ${foo_sources})
+TARGET_KINCLUDE_DIRECTORIES(foo "foo/include")
 TARGET_KMODULE_CFLAGS(foo "-Wno-error")
+
+ADD_KMODULE(bar "bar/source/bar.c")
+TARGET_KMODULE_SYMVERS(bar
+    "/path/to/first/Module.symvers"
+    "/path/to/second/Module.symvers"
+    foo # cmake KMODULE targets also work
+)
