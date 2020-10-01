@@ -1,4 +1,4 @@
-#
+x86_64-efi#
 # In the unfortunate event Linux bootup fails and GRUB cannot be accessed,
 # this approach is a reasonable alternate solution to repair things before
 # resorting to a full wipe.
@@ -40,6 +40,11 @@ export PS1="\[\033[1;32m\]chroot to ->\[\033[1;35m\](system) #\[\e[0m\] "
 # Grub related repair commands
 grub-install /dev/sda
 grub-install --recheck /dev/sda
+grub-install                  \
+    --uefi-secure-boot        \
+    --target=x86_64-efi       \
+    --efi-directory=/boot     \
+    /dev/sda
 update-grub
 
 # if the error appears:
