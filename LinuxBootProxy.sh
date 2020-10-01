@@ -18,6 +18,7 @@ mount /dev/sda1 /mnt/boot
 mount -t proc none /mnt/proc
 mount --rbind /sys /mnt/sys
 mount --rbind /dev /mnt/dev
+mount --rbind /dev/pts /mnt/dev/pts
 
 # switch root directory from live USB to original system's drive
 /usr/sbin/chroot /mnt /bin/bash
@@ -35,3 +36,23 @@ export PS1="\[\033[1;32m\]chroot to ->\[\033[1;35m\](system) #\[\e[0m\] "
 # The terminal should now be setup to perform actions such as "apt --reinstall"
 # - what ever actions are needed to repair boot, startup scripts, etc.
 #
+
+# Grub related repair commands
+grub-install /dev/sda
+grub-install --recheck /dev/sda
+update-grub
+
+# if the error appears:
+# "grub-install: error: cannot find EFI directory."
+# run the following commands:
+# determine the partition holding EFI
+lsblk -o NAME,PARTTYPE,MOUNTPOINT | grep -i "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
+# device is likely /dev/sda1
+# EFI mount-point / folder is likely /boot/efi or /boot/EFI
+# manually specify efi directory
+EFI_DIR=/boot # example
+grub-install --efi-directory=$EFI_DIR
+# https://unix.stackexchange.com/questions/405472/
+
+# Reinstalling Cinnamon
+apt install --reinstall cinnamon
