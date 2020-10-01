@@ -14,7 +14,7 @@ sudo su # or sudo -i
 
 # mount origin system partitions w/ current running kernel's interface
 mount /dev/sda2 /mnt
-mount /dev/sda1 /mnt/boot
+mount /dev/sda1 /mnt/boot/efi
 mount -t proc none /mnt/proc
 mount --rbind /sys /mnt/sys
 mount --rbind /dev /mnt/dev
@@ -40,10 +40,15 @@ export PS1="\[\033[1;32m\]chroot to ->\[\033[1;35m\](system) #\[\e[0m\] "
 # Grub related repair commands
 grub-install /dev/sda
 grub-install --recheck /dev/sda
-grub-install                  \
-    --uefi-secure-boot        \
-    --target=x86_64-efi       \
-    --efi-directory=/boot     \
+grub-install                   \
+    --boot-directory=/boot \
+    --bootloader-id=ubuntu     \
+    --target=x86_64-efi        \
+    --efi-directory=/boot/efi
+grub-install                   \
+    --uefi-secure-boot         \
+    --target=x86_64-efi        \
+    --efi-directory=/boot      \
     /dev/sda
 update-grub
 
