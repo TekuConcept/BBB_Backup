@@ -37,11 +37,15 @@ export PS1="\[\033[1;32m\]chroot to ->\[\033[1;35m\](system) #\[\e[0m\] "
 # - what ever actions are needed to repair boot, startup scripts, etc.
 #
 
+# one possible fault for boot failure: /var/run gets separated from /run
+# to fix, rejoin them as follows: (tested on Linux Mint 19)
+mv -f /var/run/* /run/
+rm -rf /var/run
+ln -s /run /var/run
+
 # Grub related repair commands
-grub-install /dev/sda
-grub-install --recheck /dev/sda
 grub-install                   \
-    --boot-directory=/boot \
+    --boot-directory=/boot     \
     --bootloader-id=ubuntu     \
     --target=x86_64-efi        \
     --efi-directory=/boot/efi
@@ -50,19 +54,21 @@ grub-install                   \
     --target=x86_64-efi        \
     --efi-directory=/boot      \
     /dev/sda
-update-grub
+grub-install /dev/sda
+grub-install --recheck /dev/sda
 
-# if the error appears:
-# "grub-install: error: cannot find EFI directory."
-# run the following commands:
+# edit grub file
+nano /etc/default/grub
+# comment out GRUB_TIMEOUT_STYLE=hidden
+# comment out GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+# set GRUB_TIMEOUT=10
+update-grub
+# tested on Linux Mint 19
+# this will allow kernel debug messages to be displayed
+# on boot for troublshooting purposes
+
 # determine the partition holding EFI
 lsblk -o NAME,PARTTYPE,MOUNTPOINT | grep -i "C12A7328-F81F-11D2-BA4B-00A0C93EC93B"
-# device is likely /dev/sda1
-# EFI mount-point / folder is likely /boot/efi or /boot/EFI
-# manually specify efi directory
-EFI_DIR=/boot # example
-grub-install --efi-directory=$EFI_DIR
-# https://unix.stackexchange.com/questions/405472/
 
 # Reinstalling Cinnamon
 apt install --reinstall cinnamon
