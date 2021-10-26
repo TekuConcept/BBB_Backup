@@ -1,0 +1,85 @@
+{
+	"name": "CppReference2",
+	"version": "1.0",
+	"author": "...",
+	"url": "https://www.mediawiki.org/wiki/Skin:Example",
+	"descriptionmsg": "cppreference2-desc",
+	"namemsg": "skinname-cppreference2",
+	"license-name": "CC0-1.0",
+	"type": "skin",
+	"requires": {
+		"MediaWiki": ">= 1.36.0"
+	},
+	"ValidSkinNames": {
+		"cppreference2": {
+			"class": "SkinCppRef2",
+			"args": [ {
+				"name": "cppreference2",
+				"responsive": true,
+				"templateDirectory": "skins/CppReference2/templates",
+				"styles": [
+					"skins.cppreference2"
+				],
+				"messages": [
+					"sitetitle",
+					"search",
+					"tagline",
+					"navigation-heading"
+				],
+				"scripts": [
+					"skins.cppreference2.js"
+				]
+			} ]
+		}
+	},
+	"MessagesDirs": {
+		"CppReference2": [
+			"i18n"
+		]
+	},
+	"AutoloadClasses": {
+		"SkinCppRef2": "include/SkinCppRef2.php"
+	},
+	"ResourceModules": {
+		"skins.cppreference2": {
+			"class": "ResourceLoaderSkinModule",
+			"features": {
+				"normalize": true,
+				"elements": true,
+				"content": true,
+				"content-parser-output": true,
+				"interface": true,
+				"logo": true
+			},
+			"styles": {
+				"resources/screen-common.less": {
+					"media": "screen"
+				},
+				"resources/screen-desktop.less": {
+					"media": "screen and (min-width: 751px)"
+				},
+				"resources/screen-mobile.less": {
+					"media": "screen and (max-width: 750px)"
+				},
+				"resources/print.css": {
+					"media": "print"
+				}
+			}
+		},
+		"skins.cppreference2.js": {
+			"scripts": [
+				"resources/main.js"
+			]
+		}
+	},
+	"ResourceFileModulePaths": {
+		"localBasePath": "",
+		"remoteSkinPath": "CppReference2"
+	},
+	"ResourceModuleSkinStyles": {
+		"cppreference2": {
+			"+ext.echo.styles.badge": "resources/extensions/echo.styles.badge.less"
+		}
+	},
+	"manifest_version": 1
+}
