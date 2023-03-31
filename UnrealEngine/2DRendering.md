@@ -1,6 +1,19 @@
 A memo to save time setting up proper colors for 2D / NPR games.
 -- Tested with UE5.1 --
 
+**Project Settings:**
+- Anti-Aliasing Method: Fast Approximate Anti-Aliasing (FXAA)
+- Auto Exposure: Disabled
+
+**Editor:**
+Under "Show," disable the following:
+- Post Processing
+  -  Eye Adaptation
+  -  Tonemapper
+
+
+
+---
 
 * Add the following to _[Project]/Config/DefaultEngine.ini_
 ```
