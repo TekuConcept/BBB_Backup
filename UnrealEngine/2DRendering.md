@@ -10,8 +10,22 @@ Under "Show," disable the following:
 - Post Processing
   -  Eye Adaptation
   -  Tonemapper
+- Set 'Lit' to 'Unlit'
 
+**Game:**
+In a C++ Actor, under `BeginPlay`, add:
+```
+UWorld* world = GetWorld();
+UGameViewportClient* viewport = world->GetGameViewport();
+FEngineShowFlags& showFlags = *viewport->GetEngineShowFlags();
 
+ApplyViewMode(EViewModeIndex::VMI_Unlit, /*perspective=*/false, showFlags);
+showFlags.EyeAdaptation = 0;
+showFlags.Tonemapper = 0;
+```
+Then add the actor to the world.
+
+**TODO**: Game section still needs troubleshooting...
 
 ---
 
